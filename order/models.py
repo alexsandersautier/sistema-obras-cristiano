@@ -9,7 +9,7 @@ class Order(models.Model):
     start_date = models.DateField(verbose_name='Início da obra')
     
     def __str__(self):
-        return f'Ordem de serviço referente a obra {self.building} iniciada em {self.start_date}'
+        return f'Ordem de serviço referente a obra {self.building} iniciada em {self.start_date.strftime('%d/%m/%Y')}'
     
     class Meta:
         verbose_name = 'Ordem de serviço'
