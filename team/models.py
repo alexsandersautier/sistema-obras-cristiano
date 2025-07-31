@@ -1,4 +1,5 @@
 from django.db import models
+from employee.models import Employee
 
 
 class Team(models.Model):
@@ -11,3 +12,16 @@ class Team(models.Model):
     class Meta:
         verbose_name = 'Equipe'
         verbose_name_plural = 'Equipes'
+
+
+class TeamEmployee(models.Model):
+
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='team_employee_employee', verbose_name='Funcionário')
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='team_employee_team', verbose_name='Equipe')
+    
+    def __str__(self):
+        return f'Funcionado {self.team} da equipe {self.team}'
+    
+    class Meta:
+        verbose_name = 'Funcionário da equipe'
+        verbose_name_plural = 'Funcionários da equipe'
