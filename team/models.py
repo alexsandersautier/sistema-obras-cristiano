@@ -20,7 +20,7 @@ class TeamEmployee(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='team_employee_team', verbose_name='Equipe')
     
     def __str__(self):
-        return f'Funcionado {self.team} da equipe {self.team}'
+        return f'Funcionário {self.employee} da equipe {self.team}'
     
     class Meta:
         verbose_name = 'Funcionário da equipe'
