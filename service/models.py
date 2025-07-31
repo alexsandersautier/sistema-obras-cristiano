@@ -1,4 +1,5 @@
 from django.db import models
+from unit.models import Unit
 
 
 class Service(models.Model):
@@ -11,3 +12,17 @@ class Service(models.Model):
     class Meta:
         verbose_name = 'Serviço'
         verbose_name_plural = 'Serviços'
+
+
+class ServicePrice(models.Model):
+    
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='serviceprice_service', verbose_name='Serviço')
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='serviceprice_unit', verbose_name='Unidade')
+    price = models.DecimalField(verbose_name='Preço', decimal_places=2, max_digits=6)
+    
+    def __str__(self):
+        return f'{self.service} no valor de {self.price} em {self.unit}'
+    
+    class Meta:
+        verbose_name = 'Preço de serviços por unidade'
+        verbose_name_plural = 'Preços de serviços por unidade'
