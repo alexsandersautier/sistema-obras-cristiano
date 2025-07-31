@@ -21,7 +21,7 @@ class ServicePrice(models.Model):
     price = models.DecimalField(verbose_name='Preço', decimal_places=2, max_digits=6)
     
     def __str__(self):
-        return f'{self.service} no valor de {self.price} em {self.unit}'
+        return f'{self.service} no valor de {self.price} por {self.unit.acronym}'
     
     class Meta:
         verbose_name = 'Preço de serviços por unidade'
