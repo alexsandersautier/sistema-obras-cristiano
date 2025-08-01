@@ -21,3 +21,7 @@ class BuildingTeam(models.Model):
     
     def __str__(self):
         return f'Equipe {self.team} da obra {self.building}'
+    
+    class Meta:
+        verbose_name = 'Equipe da obra'
+        verbose_name_plural = 'Equipes da obra'
