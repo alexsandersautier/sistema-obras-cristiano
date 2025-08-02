@@ -1,0 +1,15 @@
+.user-panel {
+    display: none !important;
+}
+
+.nav-item:first-child{
+    display: none !important;
+}
+
+.float-right{
+    display: none !important;
+}
+
+.main-footer {
+    text-align: center;
+}
