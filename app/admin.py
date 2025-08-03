@@ -1,6 +1,7 @@
 from django.contrib.admin import AdminSite
 from django.contrib import admin
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 
 class MyAdminSite(AdminSite):
     site_header = 'SGO'
@@ -13,6 +14,10 @@ class MyAdminSite(AdminSite):
             return redirect('/admin/building/building/')  # ou a URL desejada
         return response
 
+    def logout(self, request, extra_context = ...):
+        logout(request)
+        return redirect('/admin/')
+    
 # Instância do novo admin
 custom_admin_site = MyAdminSite(name='custom_admin')
 
