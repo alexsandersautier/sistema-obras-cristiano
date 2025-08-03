@@ -9,3 +9,11 @@
 .main-footer {
     text-align: center;
 }
+
+#jazzy-usermenu > .dropdown-header {
+    display: none !important;
+}
+
+#jazzy-usermenu > .dropdown-footer {
+    display: none !important;
+}
