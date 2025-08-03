@@ -173,18 +173,7 @@ JAZZMIN_SETTINGS = {
     #############
     # User Menu #
     #############
-    "usermenu_links": [
-    {
-        "name": "Perfil",
-        "url": "admin:password_change",  # Ou outro link para editar senha
-        "icon": "fas fa-user",
-    },
-    {
-        "name": "Logout",
-        "url": "admin:logout",
-        "icon": "fas fa-sign-out-alt",
-    },
-],
+    "usermenu_links": [],
 
     #############
     # Side Menu #
