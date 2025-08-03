@@ -196,7 +196,7 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
 
     # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": ["auth", "admin.dashboard"],
+    "hide_apps": ["auth"],
     
     "order_with_respect_to": [],
 

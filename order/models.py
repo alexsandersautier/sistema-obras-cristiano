@@ -21,6 +21,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderitem_order', verbose_name='Ordem de serviço')
     service_price = models.ForeignKey(ServicePrice, on_delete=models.CASCADE, related_name='orderitem_service', verbose_name='Serviço')
     quantity = models.FloatField(verbose_name='Quantidade')
+    service_data = models.DateField(verbose_name='Data do serviço', null=True, blank=True)
     
     def __str__(self):
         return f'{self.service_price} da ordem de serviço {self.order}'
