@@ -1,5 +1,6 @@
 from django.contrib.admin import AdminSite
 from django.contrib import admin
+from django.urls import path
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 
