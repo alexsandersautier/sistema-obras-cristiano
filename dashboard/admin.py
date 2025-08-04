@@ -10,6 +10,7 @@ from order.models import OrderItem
 from building.models import Building
 from team.models import Team
 from django.db.models import F, FloatField, ExpressionWrapper, Sum
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @admin.register(FakeModel)
 class CustomDashboardAdmin(admin.ModelAdmin):
@@ -57,16 +58,25 @@ class CustomDashboardAdmin(admin.ModelAdmin):
         if building and 'Todos' not in building:
             orders = orders.filter(order__building__name=building)  # ou .name se você estiver passando o nome
         if team and 'Todos' not in team:
-            orders = orders.filter(order__building__buildingteam_building__team__name=team)
+            orders = orders.filter(team__name=team)
         
         orders = orders.annotate(
             total_service=ExpressionWrapper(
                 F('service_price__price') * F('quantity'),
                 output_field=FloatField()
             )
-        )        
+        )
         
-        total_geral = orders.aggregate(total=Sum('total_service'))['total'] or 0
+        paginator = Paginator(orders, 10)
+        page_number = request.GET.get("page", 1)
+        try:
+            orders_page = paginator.page(page_number)
+        except PageNotAnInteger:
+            orders_page = paginator.page(1)
+        except EmptyPage:
+            orders_page = paginator.page(paginator.num_pages)
+
+        total_geral = sum(item.total_service for item in orders_page)
 
         MONTHS = [
             ('1', 'Janeiro'),
@@ -88,10 +98,12 @@ class CustomDashboardAdmin(admin.ModelAdmin):
             title="Dashboard de Cálculos",
             result={
                 "buildings": buildings, 
-                "orders": orders, 
+                "orders": orders_page, 
                 "years": years, 
                 "teams": teams,
             },
+            paginator=paginator,
+            page_obj=orders_page,
             months=MONTHS,
             total_geral=total_geral,
             selected= {
