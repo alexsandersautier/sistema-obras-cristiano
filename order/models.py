@@ -1,7 +1,7 @@
 from django.db import models
 from building.models import Building
 from service.models import ServicePrice
-
+from team.models import Team
 # Create your models here.
 class Order(models.Model):
     
@@ -21,6 +21,8 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderitem_order', verbose_name='Ordem de serviço')
     service_price = models.ForeignKey(ServicePrice, on_delete=models.CASCADE, related_name='orderitem_service', verbose_name='Serviço')
     quantity = models.FloatField(verbose_name='Quantidade')
+    service_data = models.DateField(verbose_name='Data do serviço', null=True, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='orderitem_team', verbose_name='Equipe', null=True, blank=True)
     service_data = models.DateField(verbose_name='Data do serviço', null=True, blank=True)
     
     def __str__(self):
