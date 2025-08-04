@@ -5,7 +5,7 @@ from unit.models import Unit
 class Service(models.Model):
     
     name = models.CharField(verbose_name='Nome', max_length=255)
-
+    max_quantity = models.FloatField(default=0)
     def __str__(self):
         return self.name
     
