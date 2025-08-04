@@ -2,8 +2,88 @@
 
 {% block content %}
 <div class="container">
-  <h1>Dashboard de Cálculos</h1>
-  <p><strong>Soma:</strong> {{ resultado.soma }}</p>
-  <p><strong>Média:</strong> {{ resultado.media }}</p>
+  <form method="GET" action="" id="formData">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="yearSelect">Ano</label>
+          <select class="form-control" name="year" id="yearSelect">
+            <option {% if not selected.year %}selected{% endif %}>Todos</option>
+            {% for ano in result.years %}
+              <option value="{{ ano }}" {% if ano|stringformat:"s" == selected.year %}selected{% endif %}>{{ ano }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="monthSelect">Mês</label>
+          <select class="form-control" name="month" id="monthSelect">
+            <option {% if not selected.month %}selected{% endif %}>Todos</option>
+            {% for num, nome in months %}
+              <option value="{{ num }}" {% if selected.month == num %}selected{% endif %}>{{ nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="buildingSelect">Obras</label>
+          <select class="form-control" name="building" id="buildingSelect">
+            <option {% if not selected.building %}selected{% endif %}>Todos</option>
+            {% for building in result.buildings %}
+              <option value="{{ building }}" {% if building|stringformat:"s" == selected.building %}selected{% endif %}>{{ building }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="teamSelect">Equipes</label>
+          <select class="form-control" name="team" id="teamSelect">
+            <option {% if not selected.team %}selected{% endif %}>Todos</option>
+            {% for team in result.teams %}
+              <option value="{{ team }}" {% if team|stringformat:"s" == selected.team %}selected{% endif %}>{{ team }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <hr>
+  <table class="table table-bordered table-hover table-striped">
+    <caption class="text-center font-weight-bold text-xl" id="tableTitle"></caption>
+    <thead class="thead-dark">
+      <tr>
+        <th>Data</th>
+        <th>Serviço</th>
+        <th>Quantidade</th>
+        <th>Valor</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in result.orders %}
+      <tr>
+        <td>{{ order.service_data|date:"d/m/Y" }}</td>
+        <td>{{ order.service_price.service.name }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>R$ {{ order.service_price.price }}</td>
+        <td>R$ {{ order.total_service|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td colspan="4" class="text-right"><strong>Total</strong></td>
+        <td class="text-left"><strong>R$ {{ total_geral|floatformat:2 }}</strong></td>
+      </tr>
+    </tfoot>
+  </table>
 </div>
 {% endblock %}

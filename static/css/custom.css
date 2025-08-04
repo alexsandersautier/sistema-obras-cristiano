@@ -17,3 +17,10 @@
 #jazzy-usermenu > .dropdown-footer {
     display: none !important;
 }
+
+table caption {
+caption-side: top !important;
+text-align: center;
+font-weight: bold;
+padding: 0.5rem;
+}
