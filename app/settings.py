@@ -209,6 +209,7 @@ JAZZMIN_SETTINGS = {
         "employee.employee": "fa-solid fa-user-plus",
         "building.building": "fa-solid fa-building",
         "order.order": "fa-solid fa-boxes-stacked",
+        "order.ordertemplate": "fa-solid fa-house",
         "service.service": "fa-solid fa-clipboard-check",
         "unit.unit": "fa-solid fa-ruler-combined",
         "dashboard.fakemodel": "fas fa-calculator",

@@ -1,8 +1,19 @@
 from django.contrib import admin
-from .models import Order,OrderItem
+from .models import Order,OrderItem, OrderTemplate, OrderTemplateItem
 from django.forms.models import BaseInlineFormSet
 from django.core.exceptions import ValidationError
 from collections import defaultdict
+from .forms import OrderAdminForm, OrderTemplateItemForm
+
+class OrderTemplateItemInline(admin.TabularInline):
+    model = OrderTemplateItem
+    extra = 1
+    form = OrderTemplateItemForm
+
+@admin.register(OrderTemplate)
+class OrderTemplateAdmin(admin.ModelAdmin):
+    inlines = [OrderTemplateItemInline]
+    list_display = ['name']
 
 class OrderItemInlineFormSet(BaseInlineFormSet):
     def clean(self):
@@ -31,5 +42,19 @@ class OrderItemInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
+    form = OrderAdminForm
+    
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+        template = form.cleaned_data.get('template')
+        if template and not change:  # Só popula ao criar, não ao editar
+
+            for item in template.items.all():
+                OrderItem.objects.create(
+                    order=obj,
+                    service_price=item.service_price,
+                    quantity=item.quantity
+                )
     
 admin.site.register(Order, OrderAdmin)
