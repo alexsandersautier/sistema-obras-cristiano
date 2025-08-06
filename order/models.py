@@ -23,7 +23,6 @@ class OrderItem(models.Model):
     quantity = models.FloatField(verbose_name='Quantidade')
     service_data = models.DateField(verbose_name='Data do serviço', null=True, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='orderitem_team', verbose_name='Equipe', null=True, blank=True)
-    service_data = models.DateField(verbose_name='Data do serviço', null=True, blank=True)
         
     def __str__(self):
         return f'{self.service_price} da ordem de serviço {self.order}'

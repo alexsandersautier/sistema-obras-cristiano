@@ -2,11 +2,6 @@ from django import forms
 from .models import Order, OrderTemplate, OrderTemplateItem
 
 class OrderAdminForm(forms.ModelForm):
-    template = forms.ModelChoiceField(
-        queryset=OrderTemplate.objects.all(),
-        required=False,
-        label="Usar Template"
-    )
 
     class Meta:
         model = Order
