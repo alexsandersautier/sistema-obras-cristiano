@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const totalCell = row.querySelector('.field-display_total');
                 const quantityInput = row.querySelector('.field-quantity input');
                 const totalFieldWrapper = document.querySelector('.form-group .field-total_price_summary .readonly');
-                console.log(totalFieldWrapper.innerText)
                 if (maxQuantityCell) {
                     maxQuantityCell.textContent = data.max_quantity.toLocaleString('pt-BR');
                 }
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (serviceSelect) {
             $(serviceSelect).on("select2:select", function (e) {
                 const serviceId = e.params.data.id
-
                 updateRow(row, serviceId);
             });
         }
@@ -74,41 +72,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    
     // Adiciona listeners para as linhas existentes ao carregar a página
     const existingRows = document.querySelectorAll('.dynamic-templatebuildingservice');
+    const existingRowsBuildings = document.querySelectorAll('#buildingservice_building-0')
     existingRows.forEach(addListenersToRow);
+    existingRowsBuildings.forEach(addListenersToRow);
 
-    function moveTotalSummary() {
-        // Encontra o elemento do campo 'Total do Template'
-        // Baseado na estrutura HTML padrão do Django para fields
-        const totalFieldWrapper = document.querySelector('.form-group .field-total_price_summary');
-        
-        // Encontra o contêiner do botão "Adicionar outro Template"
-        // O seletor '.add-row' é a classe padrão do Django para esse link
-        const addRowLink = document.querySelector('.add-row');
-
-        console.log(addRowLink)
-        
-        if (totalFieldWrapper && addRowLink) {
-            console.log('entrou')
-            // Mova o campo de total para o contêiner do botão
-            const parent = addRowLink.closest('p, div');
-            if (parent) {
-                parent.prepend(totalFieldWrapper);
-                
-                // Opcional: Adicione estilos para alinhamento
-                parent.style.display = 'flex';
-                parent.style.alignItems = 'center';
-                parent.style.gap = '10px';
-            }
-        }
-    }
-
+    
     // Usa o evento nativo do Django para lidar com novas linhas
     document.addEventListener('formset:added', function(event) {
         const newRow = event.target;
         addListenersToRow(newRow);
     });
 
-    moveTotalSummary();
 });

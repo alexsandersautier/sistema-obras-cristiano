@@ -57,7 +57,6 @@ class TemplateAdmin(admin.ModelAdmin):
 
     def total_price_summary(self, obj):
         if obj:
-            # Use o related_name 'templatebuildingservice_template'
             total = sum(Decimal(item.quantity) * item.service_price.price for item in obj.templatebuildingservice_template.all() if item.quantity and item.service_price)
             return f"{localize(total)}"
         return "0,00"
@@ -72,10 +71,46 @@ class BuildingTeamInline(admin.TabularInline):
 class BuildingServiceInline(admin.TabularInline):
     model = BuildingService
     extra = 0
+    fields = ('service_price', 'quantity', 'display_unit_price', 'display_total')
+    readonly_fields = ('display_unit_price', 'display_total')
+    
+    class Media:
+        js = ('js/template.js', )
+
+    def display_unit_price(self, obj):
+        # Your method logic remains the same
+        if obj.service_price and obj.service_price.price is not None:
+            return f"{localize(obj.service_price.price)}"
+        return "-"
+    
+    display_unit_price.short_description = 'Preço Unitário'
+
+    def display_total(self, obj):
+        if obj.quantity is None or obj.service_price is None or obj.service_price.price is None:
+            return "-"
+        try:
+            total = Decimal(obj.quantity) * obj.service_price.price
+            return f"{localize(total)}"
+        except (TypeError, ValueError):
+            return "-"
+    
+    display_total.short_description = "Total"
+
 class BuildingAdmin(admin.ModelAdmin):
     inlines = [BuildingTeamInline, BuildingServiceInline]
     form = BuildingFormAdmin
     
+    readonly_fields = ['total_price_summary']
+    fields = ['name', 'template', 'total_price_summary']
+
+    def total_price_summary(self, obj):
+        if obj:
+            total = sum(Decimal(item.quantity) * item.service_price.price for item in obj.buildingservice_building.all() if item.quantity and item.service_price)
+            return f"{localize(total)}"
+        return "0,00"
+    
+    total_price_summary.short_description = "Total da Obra"
+
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
 
