@@ -2,7 +2,6 @@ from django.db import models
 from team.models import Team
 from service.models import ServicePrice
 
-# Create your models here.
 class Building(models.Model):
 
     name = models.CharField(verbose_name='Nome', max_length=255)

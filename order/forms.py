@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, OrderTemplate, OrderTemplateItem
+from .models import Order, OrderTemplateItem
 
 class OrderAdminForm(forms.ModelForm):
 

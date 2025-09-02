@@ -1,6 +1,3 @@
-const currentYear = new Date().getFullYear();
-const currentMonth = new Date().getMonth();
-
 const year = document.getElementById('yearSelect');
 const month = document.getElementById('monthSelect');
 const currentBuilding = document.getElementById('buildingSelect');
@@ -9,10 +6,14 @@ const tableTitle = document.getElementById('tableTitle');
 if (tableTitle) tableTitle.innerText = `Obra: ${currentBuilding.value} - Equipe: ${currentTeam.value}`
 
 const logoLink = document.getElementById('jazzy-logo');
-logoLink.setAttribute('href', '/admin/building/building/');
+if (logoLink) {
+    logoLink.setAttribute('href', '/admin/building/building/');
+}
 
 const footer = document.querySelector('.main-footer');
-footer.innerHTML = `<strong>© ${currentYear} Sistema desenvolvido por Alexsander Sautier</strong>`;
+if (footer) {
+    footer.innerHTML = `<strong>© ${new Date().getFullYear()} Sistema desenvolvido por Alexsander Sautier</strong>`;
+}
 
 const filters = document.getElementById('formData');
 
@@ -60,10 +61,12 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", () => {
         const newTheme = body.className.includes("darkly") ? "flatly" : "darkly";
         localStorage.setItem("jazzmin-theme", newTheme);
-        location.reload();  // aplica o tema com recarregamento completo
+        location.reload();
     });
 
     if (header) {
         header.appendChild(button);
     }
+
+    
 });
