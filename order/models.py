@@ -2,6 +2,7 @@ from django.db import models
 from building.models import Building
 from service.models import ServicePrice
 from team.models import Team
+from django.core.exceptions import ValidationError
 
 class Order(models.Model):
     
@@ -27,6 +28,13 @@ class OrderItem(models.Model):
     def __str__(self):
         return f'{self.service_price} da ordem de serviço {self.order}'
     
+    def clean(self):
+        super().clean()
+        if self.service_data and self.order and self.order.start_date:
+            if self.service_data < self.order.start_date:
+                raise ValidationError({
+                    'service_data': f'A data do serviço ({self.service_data.strftime("%d/%m/%Y")}) não pode ser anterior à data de início da obra ({self.order.start_date.strftime("%d/%m/%Y")}).'
+                })
     class Meta:
         verbose_name = 'Item da ordem de serviço'
         verbose_name_plural = 'Itens da orden de serviço' 
