@@ -25,7 +25,8 @@ class TemplateItem(admin.TabularInline):
     def display_max_quantity(self, obj):
         # Your method logic remains the same
         if obj.service_price and obj.service_price.service and obj.service_price.service.max_quantity is not None:
-            return f"{localize(obj.service_price.service.max_quantity)}"
+            value = f"{obj.service_price.service.max_quantity:.2f}"
+            return value.replace('.', ',')
         return "-"
     
     display_max_quantity.short_description = "Quantidade Máxima"
@@ -51,6 +52,16 @@ class TemplateItem(admin.TabularInline):
 
 class TemplateAdmin(admin.ModelAdmin):
     inlines = [TemplateItem]
+    readonly_fields = ['total_price_summary']
+    fields = ['name', 'total_price_summary']
+
+    def total_price_summary(self, obj):
+        if obj:
+            # Use o related_name 'templatebuildingservice_template'
+            total = sum(Decimal(item.quantity) * item.service_price.price for item in obj.templatebuildingservice_template.all() if item.quantity and item.service_price)
+            return f"{localize(total)}"
+        return "0,00"
+    total_price_summary.short_description = "Total do Template"
 
 admin.site.register(Template, TemplateAdmin)
 
