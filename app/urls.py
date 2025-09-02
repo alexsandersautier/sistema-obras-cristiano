@@ -11,6 +11,7 @@ urlpatterns = [
     path('i18n/setlang/', set_language, name='set_language'),
     path('', RedirectView.as_view(url='/admin/dashboard/fakemodel/dashboard/', permanent=False)),
     path("get-services/<int:building_id>/", v.get_services_by_building, name="get_services_by_building"),
+    path('get_service_details/<int:service_price_id>/', v.get_service_details, name='get_service_details'),
 ]
 
 

@@ -60,5 +60,5 @@ class TemplateBuildingService(models.Model):
     quantity = models.FloatField(verbose_name='Quantidade')
     
     class Meta:
-        verbose_name = 'Template'
+        verbose_name = 'Serviço '
         verbose_name_plural = 'Templates'
