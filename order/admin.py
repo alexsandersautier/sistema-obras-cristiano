@@ -11,7 +11,6 @@ class OrderItemInlineFormSet(BaseInlineFormSet):
 
         from collections import defaultdict
         from django.core.exceptions import ValidationError
-        from django.forms.utils import ErrorList
         from django.db.models import Sum
         from building.models import BuildingService
 
@@ -28,26 +27,26 @@ class OrderItemInlineFormSet(BaseInlineFormSet):
                 quantity = form.cleaned_data['quantity']
 
                 service_quantities[service_price] += quantity
-                # Guardar referência para mostrar erro no formulário correto
-                form_map[service_price] = form
+                form_map[service_price] = form  # referência para mostrar erro no form correto
 
         for service_price, new_quantity in service_quantities.items():
-            # Soma das quantidades anteriores (de outras ordens da mesma obra)
-            total_existing = (
-                OrderItem.objects.filter(
-                    order__building=building,
-                    service_price=service_price
-                )
-                .exclude(order=current_order)  # Exclui a ordem atual (em caso de edição)
-                .aggregate(Sum('quantity'))['quantity__sum'] or 0
+            # Query para somar quantidades existentes de outras ordens da mesma obra
+            qs = OrderItem.objects.filter(
+                order__building=building,
+                service_price=service_price
             )
 
-            # Soma total com os dados do formulário atual
+            if current_order.pk:  # só exclui a ordem atual se ela já estiver salva
+                qs = qs.exclude(order=current_order)
+
+            total_existing = qs.aggregate(Sum('quantity'))['quantity__sum'] or 0
             total_after_save = total_existing + new_quantity
 
-            # Verifica se há quantidade prevista para esse serviço na obra
+            # Verifica quantidade máxima prevista na obra
             try:
-                building_service = BuildingService.objects.get(building=building, service_price=service_price)
+                building_service = BuildingService.objects.get(
+                    building=building, service_price=service_price
+                )
                 max_quantity = building_service.quantity
 
                 if total_after_save > max_quantity:
@@ -60,8 +59,9 @@ class OrderItemInlineFormSet(BaseInlineFormSet):
                         )
                     )
             except BuildingService.DoesNotExist:
-                # Se não estiver vinculado na obra, não valida — como você pediu
+                # Se não estiver vinculado, não valida
                 pass
+
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
