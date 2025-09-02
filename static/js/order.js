@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const buildingSelect = document.querySelector("#id_building");
     if (buildingSelect) {
-        // Para quando mudar no Select2
         $(buildingSelect).on("select2:select", function (e) {
             const buildingId = this.value;
             if (!buildingId) return;

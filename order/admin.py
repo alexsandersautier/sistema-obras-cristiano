@@ -73,7 +73,7 @@ class OrderItemInline(admin.TabularInline):
                     buildingservice_service__building=parent_order.building
                 ).distinct()
             else:
-                kwargs["queryset"] = ServicePrice.objects.none()
+                kwargs["queryset"] = ServicePrice.objects.all()
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
