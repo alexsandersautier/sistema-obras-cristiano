@@ -101,7 +101,9 @@ class BuildingAdmin(admin.ModelAdmin):
     form = BuildingFormAdmin
     
     readonly_fields = ['total_price_summary']
+    list_display = ('name', 'total_price_summary')
     fields = ['name', 'template', 'total_price_summary']
+    ordering = ('name',)
 
     def total_price_summary(self, obj):
         if obj:
