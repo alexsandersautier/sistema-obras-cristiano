@@ -8,9 +8,11 @@ from rest_framework import routers
 
 from unit import views as unit_views
 from . import views as user_views
+from employee import views as employee_views
 
 router = routers.DefaultRouter()
 router.register(r"units", unit_views.UnitViewSet)
+router.register(r"employees", employee_views.EmployeeViewSet)
 router.register(r"users", user_views.UserInfoViewSet, basename="user-info")
 
 urlpatterns = [
