@@ -9,11 +9,15 @@ from rest_framework import routers
 from unit import views as unit_views
 from . import views as user_views
 from employee import views as employee_views
+from team import views as team_views
 
 router = routers.DefaultRouter()
 router.register(r"units", unit_views.UnitViewSet)
 router.register(r"employees", employee_views.EmployeeViewSet)
 router.register(r"users", user_views.UserInfoViewSet, basename="user-info")
+router.register(r"teams", team_views.TeamViewSet)
+router.register(r"teams-employees", team_views.TeamEmployeeViewSet)
+router.register(r"teams-employees-save", team_views.TeamEmployeeSaveViewSet, basename="team-employee-save")
 
 urlpatterns = [
     path("admin/custom-dashboard/", views.calculos_dashboard, name="custom-dashboard"),
