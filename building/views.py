@@ -1,8 +1,30 @@
 from django.http import JsonResponse
 from building.models import BuildingService
-from .models import ServicePrice
+from .models import ServicePrice, Building, BuildingTeam, BuildingService
 from django.shortcuts import get_object_or_404
+from rest_framework import permissions, viewsets
+from .serializers import BuildingSerializer, BuildingTeamSerializer, BuildingServiceSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
+class BuildingViewSet(viewsets.ModelViewSet):
+    queryset = Building.objects.all().order_by("name")
+    serializer_class = BuildingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class BuildingTeamViewSet(viewsets.ModelViewSet):
+    queryset = BuildingTeam.objects.all()
+    serializer_class = BuildingTeamSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['building',]
+
+class BuildingServiceViewSet(viewsets.ModelViewSet):
+    queryset = BuildingService.objects.all()
+    serializer_class = BuildingServiceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['building',]
+    
 def get_service_details(request, service_price_id):
     service_price = get_object_or_404(ServicePrice, pk=service_price_id)
     data = {

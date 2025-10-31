@@ -11,6 +11,7 @@ from . import views as user_views
 from employee import views as employee_views
 from team import views as team_views
 from service import views as service_views
+from building import views as building_views
 
 router = routers.DefaultRouter()
 router.register(r"units", unit_views.UnitViewSet)
@@ -21,6 +22,9 @@ router.register(r"teams-employees", team_views.TeamEmployeeViewSet)
 router.register(r"teams-employees-save", team_views.TeamEmployeeSaveViewSet, basename="team-employee-save")
 router.register(r"services", service_views.ServiceViewSet)
 router.register(r"services-price", service_views.ServicePriceViewSet)
+router.register(r"buildings", building_views.BuildingViewSet)
+router.register(r"buildings-team", building_views.BuildingTeamViewSet)
+router.register(r"buildings-service", building_views.BuildingServiceViewSet)
 
 urlpatterns = [
     path("admin/custom-dashboard/", views.calculos_dashboard, name="custom-dashboard"),
